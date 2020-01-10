@@ -1,30 +1,40 @@
-﻿using System;
-using Harmony;
-using StardewModdingAPI;
+﻿using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.Locations;
 
 namespace UnderdarkSewer
 {
-
+    /// <summary>The mod entry point.</summary>
     public class ModEntry : Mod
     {
-
+        /*********
+        ** Public methods
+        *********/
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            var harmony = HarmonyInstance.Create("com.github.kirbylink.underdarkkrobus");
-            var original = typeof(Sewer).GetConstructor(new Type[] { typeof(string), typeof(string) });
-            var constructorPostfix = helper.Reflection.GetMethod(typeof(SewerMapFix), "ConstructorPostfix").MethodInfo;
-            harmony.Patch(original, null, new HarmonyMethod(constructorPostfix));
+            helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
         }
-    }
 
-    public static class SewerMapFix
-    {
-        static void ConstructorPostfix(Sewer __instance)
+
+        /*********
+        ** Private methods
+        *********/
+        /// <summary>Invoked after a new day starts.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
-            var krobusfield = AccessTools.Field(typeof(Sewer), "Krobus");
-            (krobusfield.GetValue(__instance) as NPC).Sprite = new AnimatedSprite("Characters\\Krobus", 0, 16, 32);
+            this.ApplyChanges();
+        }
+
+        /// <summary>Apply the changes to Krobus' sprite.</summary>
+        private void ApplyChanges()
+        {
+            NPC krobus = Game1.getCharacterFromName("Krobus");
+            if (krobus?.Sprite != null && krobus.Sprite.SpriteHeight != 32)
+                krobus.Sprite = new AnimatedSprite("Characters\\Krobus", 0, 16, 32);
         }
     }
 }
