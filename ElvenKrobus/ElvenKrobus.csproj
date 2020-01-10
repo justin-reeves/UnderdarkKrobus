@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <AssemblyName>UnderdarkKrobus</AssemblyName>
-    <RootNamespace>UnderdarkKrobus</RootNamespace>
+    <AssemblyName>ElvenKrobus</AssemblyName>
+    <RootNamespace>ElvenKrobus</RootNamespace>
     <Version>1.1.0</Version>
     <TargetFramework>net452</TargetFramework>
     <Platforms>x86</Platforms>
