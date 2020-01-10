@@ -6,5 +6,5 @@
   "UniqueID": "melnoelle.underdarkkrobus",
   "EntryDll": "ElvenKrobus.dll",
   "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": []
+  "UpdateKeys": [ "Nexus:3071" ]
 }
