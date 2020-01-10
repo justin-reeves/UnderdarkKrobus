@@ -15,6 +15,7 @@ namespace UnderdarkSewer
         public override void Entry(IModHelper helper)
         {
             helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
+            helper.Events.Player.Warped += this.OnWarped;
         }
 
 
@@ -27,6 +28,17 @@ namespace UnderdarkSewer
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
             this.ApplyChanges();
+        }
+
+        /// <summary>Invoked after a new day starts.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnWarped(object sender, WarpedEventArgs e)
+        {
+            // farmhands in multiplayer may not have Krobus in a synced location, so we need to
+            // apply the changes when they warp into the same location.
+            if (!Context.IsMainPlayer)
+                this.ApplyChanges();
         }
 
         /// <summary>Apply the changes to Krobus' sprite.</summary>
